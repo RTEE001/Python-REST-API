@@ -1,0 +1,7 @@
+/migrations/README.md
+/gitignore
+/migrations/versions/__pycache__/
+.env
+__pycache__
+.DS_Store
+alembic.ini
