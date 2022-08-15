@@ -1,6 +1,6 @@
-from flask import Flask 
-from flask_sqlalchemy import SQLAlchemy 
-from flask_marshmallow import Marshmallow 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask_restful import Api
 from dotenv import load_dotenv
 import os
@@ -8,25 +8,34 @@ import os
 load_dotenv()
 
 
-app = Flask(__name__) 
-api = Api(app) 
+app = Flask(__name__)
+api = Api(app)
 URL = os.getenv("URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
-db = SQLAlchemy(app) 
+app.config["SQLALCHEMY_DATABASE_URI"] = URL
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 ma = Marshmallow(app)
- 
+
+
 class Computer(db.Model):
 
-    computer_id = db.Column(db.BigInteger , nullable = False, unique = True, primary_key = True)
-    harddrive_type = db.Column(db.String(55), nullable = False)
+    id = db.Column(db.Integer, nullable=False, unique=True, primary_key=True)
+    harddrive_type = db.Column(db.String(55), nullable=False)
     processor = db.Column(db.String(55), nullable=False)
-    ram_amount = db.Column(db.String(55), nullable = False)
-    max_ram = db.Column(db.String(55) , nullable = False)
-    harddrive_space = db.Column(db.String(55), nullable = False)
+    ram_amount = db.Column(db.Numeric, nullable=False)
+    max_ram = db.Column(db.Numeric, nullable=False)
+    harddrive_space = db.Column(db.Numeric, nullable=False)
     form_factor = db.Column(db.String(55))
 
-    def __init__(self, harddrive_type, processor, ram_amount, max_ram, harddrive_space, form_factor):
+    def __init__(
+        self,
+        harddrive_type,
+        processor,
+        ram_amount,
+        max_ram,
+        harddrive_space,
+        form_factor,
+    ):
 
         self.harddrive_type = harddrive_type
         self.processor = processor
@@ -35,9 +44,19 @@ class Computer(db.Model):
         self.harddrive_space = harddrive_space
         self.form_factor = form_factor
 
+
 class ComputerSchema(ma.Schema):
     class Meta:
-        fields = ('computer_id', 'harddrive_type', 'processor', 'ram_amount', 'max_ram', 'harddrive_space', 'form_factor')
+        fields = (
+            "id",
+            "harddrive_type",
+            "processor",
+            "ram_amount",
+            "max_ram",
+            "harddrive_space",
+            "form_factor",
+        )
+        model = Computer
+
 
 db.create_all()
-
