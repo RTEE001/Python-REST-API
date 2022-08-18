@@ -13,9 +13,9 @@ Create a ".env" file in the root directory
 In your .env file you should have the following details
 
 ```
-PASSWORD = <YOUR_PASSWORD>
-USERNAME= <YOUR_USERNAME>
-URL = <A_VALID_CONNECTION_URL>
+PASSWORD = <YOUR_PASSWORD FOR DOCKER>, Example PASSWORD = password
+USERNAME= <YOUR_USERNAME FOR DOCKER>, Example USERNAME = user
+URL = <A_VALID_CONNECTION_URL>, Example URL =
 ```
 
 Run the docker file using

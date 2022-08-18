@@ -5,16 +5,17 @@ from flask_restful import Resource
 
 class ComputerManager(Resource):
     @staticmethod
-    @app.route("/get-computers", methods=["GET"])
+    @app.route("/computers", methods=["GET"])
     def get():
+
         computers_schema = ComputerSchema(many=True)
         computers = Computer.query.all()
         return jsonify(computers_schema.dump(computers))
 
     @staticmethod
-    @app.route("/add-computer", methods=["POST"])
+    @app.route("/computers", methods=["POST"])
     def post():
-
+       
         harddrive_type = request.json["harddrive_type"]
         processor = request.json["processor"]
         ram_amount = request.json["ram_amount"]
