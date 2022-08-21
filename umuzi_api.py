@@ -58,7 +58,7 @@ def post():
     db.session.add(new_computer)
     db.session.commit()
 
-    return jsonify({"Message": f"Computer inserted."})
+    return jsonify({"Message": "Computer inserted."})
 
 
 
