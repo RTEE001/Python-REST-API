@@ -1,27 +1,56 @@
 from flask import request, jsonify
 from umuzi_computers import ComputerSchema, Computer, db, app
-from flask_restful import Resource
 from enum import Enum
 
 class FormFactor(Enum):
     MINI = 'mini'
     MINI_ATX = 'mini-atx'
-    MICRO = 'mini-micro-atx'
+    MICRO = 'micro'
+
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_
 
 class HardDriveType(Enum):
     SSD = 'ssd'
     HDD = 'hdd'
 
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_
+
+def check_form_factor(form_factor):
+    if not FormFactor.has_value(form_factor):
+        return False
+    return True
+
+def check_harddrive_type(harddrive_type):
+    if not HardDriveType.has_value(harddrive_type):
+        return False
+    return True
+
+def form_factor_messages():
+    return jsonify({"Message": 'Form factor should be either mini, mini-atx or  micro'})
+
+def harddrive_type_messages():
+    return jsonify({"Message": 'Hard drive type should be either ssd or hdd'})
 
 @app.route("/computers", methods=["POST"])
 def post():
     
+    form_factor = request.json["form_factor"]
     harddrive_type = request.json["harddrive_type"]
+
+    if not check_form_factor(form_factor):
+        form_factor_messages()
+    if not HardDriveType.has_value(harddrive_type):
+        harddrive_type_messages()
+
     processor = request.json["processor"]
     ram_amount = request.json["ram_amount"]
     max_ram = request.json["max_ram"]
     harddrive_space = request.json["harddrive_space"]
-    form_factor = request.json["form_factor"]
+    
 
     new_computer = Computer(
         harddrive_type, processor, ram_amount, max_ram, harddrive_space, form_factor
@@ -60,6 +89,8 @@ def put(id):
 
         if element=="harddrive_type":
             harddrive_type = request.json["harddrive_type"]
+            if not check_harddrive_type(harddrive_type):
+                harddrive_type_messages()
             computer.harddrive_type = harddrive_type
 
         elif element=="processor":
@@ -80,6 +111,8 @@ def put(id):
 
         elif element=="form_factor":
             form_factor = request.json["form_factor"]
+            if not check_form_factor(form_factor):
+                form_factor_messages()   
             computer.form_factor = form_factor     
     
 
@@ -88,4 +121,4 @@ def put(id):
         
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
