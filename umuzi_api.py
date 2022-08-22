@@ -20,14 +20,11 @@ class HardDriveType(Enum):
         return value in cls._value2member_map_
 
 def check_form_factor(form_factor):
-    if not FormFactor.has_value(form_factor):
-        return False
-    return True
+    return FormFactor.has_value(form_factor)
 
 def check_harddrive_type(harddrive_type):
-    if not HardDriveType.has_value(harddrive_type):
-        return False
-    return True
+    return HardDriveType.has_value(harddrive_type)
+         
 
 def form_factor_messages():
     return jsonify({"Message": 'Form factor should be either mini, mini-atx or  micro'})
@@ -43,7 +40,7 @@ def post():
 
     if not check_form_factor(form_factor):
         form_factor_messages()
-    if not HardDriveType.has_value(harddrive_type):
+    if not check_harddrive_type(harddrive_type):
         harddrive_type_messages()
 
     processor = request.json["processor"]
