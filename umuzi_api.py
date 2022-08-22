@@ -55,7 +55,7 @@ def post():
     db.session.add(new_computer)
     db.session.commit()
 
-    return jsonify({"Message": f"Computer inserted."})
+    return jsonify({"Message": "Computer inserted."})
 
 
 
@@ -118,4 +118,4 @@ def put(id):
         
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
