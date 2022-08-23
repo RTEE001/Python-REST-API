@@ -39,9 +39,10 @@ def post():
     harddrive_type = request.json["harddrive_type"]
 
     if not check_form_factor(form_factor):
-        form_factor_messages()
+        return form_factor_messages()
     if not check_harddrive_type(harddrive_type):
-        harddrive_type_messages()
+        return harddrive_type_messages()
+        
 
     processor = request.json["processor"]
     ram_amount = request.json["ram_amount"]
@@ -87,7 +88,7 @@ def put(id):
         if element=="harddrive_type":
             harddrive_type = request.json["harddrive_type"]
             if not check_harddrive_type(harddrive_type):
-                harddrive_type_messages()
+                return harddrive_type_messages()
             computer.harddrive_type = harddrive_type
 
         elif element=="processor":
@@ -109,7 +110,7 @@ def put(id):
         elif element=="form_factor":
             form_factor = request.json["form_factor"]
             if not check_form_factor(form_factor):
-                form_factor_messages()   
+                return form_factor_messages()   
             computer.form_factor = form_factor     
     
 
