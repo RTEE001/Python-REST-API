@@ -9,8 +9,8 @@ import os
 load_dotenv()
 app = Flask(__name__)
 api = Api(app)
-URL = os.getenv("URL")
-app.config["SQLALCHEMY_DATABASE_URI"] = URL
+SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
