@@ -1,6 +1,8 @@
 from flask import request, jsonify
 from umuzi_computers import ComputerSchema, Computer, db, app
 from enum import Enum
+from werkzeug.exceptions import BadRequest
+
 
 class FormFactor(Enum):
     MINI = 'mini'
@@ -20,35 +22,27 @@ class HardDriveType(Enum):
         return value in cls._value2member_map_
 
 def check_form_factor(form_factor):
-    return FormFactor.has_value(form_factor)
+    if not FormFactor.has_value(form_factor):
+        raise BadRequest('Form factor should be either mini, mini-atx or  micro')
+    return True
 
 def check_harddrive_type(harddrive_type):
-    return HardDriveType.has_value(harddrive_type)
-         
-
-def form_factor_messages():
-    return jsonify({"Message": 'Form factor should be either mini, mini-atx or  micro'})
-
-def harddrive_type_messages():
-    return jsonify({"Message": 'Hard drive type should be either ssd or hdd'})
+    if not HardDriveType.has_value(harddrive_type):
+        raise BadRequest('Hard drive type should be either ssd or hdd')
+    return True
 
 @app.route("/computers", methods=["POST"])
 def post():
     
     form_factor = request.json["form_factor"]
     harddrive_type = request.json["harddrive_type"]
-
-    if not check_form_factor(form_factor):
-        return form_factor_messages()
-    if not check_harddrive_type(harddrive_type):
-        return harddrive_type_messages()
-        
-
     processor = request.json["processor"]
     ram_amount = request.json["ram_amount"]
     max_ram = request.json["max_ram"]
     harddrive_space = request.json["harddrive_space"]
-    
+
+    check_form_factor(form_factor)
+    check_harddrive_type(harddrive_type)
 
     new_computer = Computer(
         harddrive_type, processor, ram_amount, max_ram, harddrive_space, form_factor
@@ -87,8 +81,7 @@ def put(id):
 
         if element=="harddrive_type":
             harddrive_type = request.json["harddrive_type"]
-            if not check_harddrive_type(harddrive_type):
-                return harddrive_type_messages()
+            check_harddrive_type(harddrive_type)
             computer.harddrive_type = harddrive_type
 
         elif element=="processor":
@@ -109,8 +102,7 @@ def put(id):
 
         elif element=="form_factor":
             form_factor = request.json["form_factor"]
-            if not check_form_factor(form_factor):
-                return form_factor_messages()   
+            check_form_factor(form_factor)  
             computer.form_factor = form_factor     
     
 

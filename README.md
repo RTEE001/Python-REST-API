@@ -15,8 +15,8 @@ In your .env file you should have the following details
 ```
 PASSWORD = <YOUR_PASSWORD FOR DOCKER>, Example PASSWORD = password
 USERNAME= <YOUR_USERNAME FOR DOCKER>, Example USERNAME = user
-URL = <A_VALID_CONNECTION_URL for your database>,
-Example URL = postgresql+psycopg2://user:password@localhost:5435/computers
+SQLALCHEMY_DATABASE_URI = <A_VALID_CONNECTION_URL for your database>,
+Example SQLALCHEMY_DATABASE_URI = postgresql+psycopg2://user:password@localhost:5435/computers
 ```
 
 Run the docker file using
