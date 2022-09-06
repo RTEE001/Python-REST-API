@@ -77,34 +77,32 @@ def put(id):
 
     computer = Computer.query.get(id)
 
-    for element in request.json:
+    if "harddrive_type" in request.json:
+        harddrive_type = request.json["harddrive_type"]
+        check_harddrive_type(harddrive_type)
+        computer.harddrive_type = harddrive_type
 
-        if element=="harddrive_type":
-            harddrive_type = request.json["harddrive_type"]
-            check_harddrive_type(harddrive_type)
-            computer.harddrive_type = harddrive_type
+    if "processor" in request.json:
+        processor = request.json["processor"]
+        computer.processor = processor
 
-        elif element=="processor":
-            processor = request.json["processor"]
-            computer.processor = processor
-
-        elif element=="ram_amount":
-            ram_amount = request.json["ram_amount"]
-            computer.ram_amount = ram_amount
-
-        elif element=="max_ram":
-            max_ram = request.json["max_ram"]
-            computer.max_ram = max_ram
-
-        elif element=="harddrive_space":
-            harddrive_space = request.json["harddrive_space"]
-            computer.harddrive_space = harddrive_space  
-
-        elif element=="form_factor":
-            form_factor = request.json["form_factor"]
-            check_form_factor(form_factor)  
-            computer.form_factor = form_factor     
+    if "ram_amount" in request.json:
+        ram_amount = request.json["ram_amount"]
+        computer.ram_amount = ram_amount
     
+
+    if "max_ram" in request.json:
+        max_ram = request.json["max_ram"]
+        computer.max_ram = max_ram
+
+    if "harddrive_space" in request.json:
+        harddrive_space = request.json["harddrive_space"]
+        computer.harddrive_space = harddrive_space 
+
+    if "form_factor" in request.json:
+        form_factor = request.json["form_factor"]
+        check_form_factor(form_factor)  
+        computer.form_factor = form_factor 
 
     db.session.commit()
     return jsonify({"Message": f"Computer {id} altered."})
